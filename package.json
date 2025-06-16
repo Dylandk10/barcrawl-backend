@@ -15,7 +15,8 @@
   "dependencies": {
     "@googlemaps/places": "^2.0.1",
     "dotenv": "^16.5.0",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "zod": "^3.25.64"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
