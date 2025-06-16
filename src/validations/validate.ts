@@ -8,3 +8,12 @@ export type SearchText = z.infer<typeof searchTextSchema>;
 
 
 
+//sign up validation
+export const signupSchema = z.object({
+  email: z.string().email({ message: 'Invalid email address' }),
+  password: z
+    .string()
+    .min(8, { message: 'Password must be at least 8 characters' })
+    .max(100, { message: 'Password is too long' }),
+});
+export type signup = z.infer<typeof signupSchema>;
