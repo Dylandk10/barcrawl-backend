@@ -8,7 +8,7 @@ export type SearchText = z.infer<typeof searchTextSchema>;
 
 
 
-//sign up validation
+//sign up validation is the same as login just emaill and password
 export const signupSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
   password: z

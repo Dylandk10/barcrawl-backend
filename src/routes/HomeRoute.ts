@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { PlacesClientAPI } from "../services/PlacesClientAPI";
 import { type SearchText, searchTextSchema, signupSchema, type signup } from "../validations/validate";
-import { validateZod } from "../middleware/middleware";
+import { validateZod,  authMiddleware} from "../middleware/middleware";
 import userService from "../db/userService";
 import { AuthError } from "@supabase/supabase-js";
 
@@ -20,7 +20,7 @@ export class HomeRoute {
 
   private registerRoutes(): void {
     this.router.get("/", this.index);
-    this.router.post("/searchTextTest", validateZod(searchTextSchema), this.searchTextTest);
+    this.router.post("/searchTextTest", authMiddleware, validateZod(searchTextSchema), this.searchTextTest);
     this.router.post("/searchForPlace", this.searchByText);
     this.router.post("/signup", validateZod(signupSchema), this.signup);
     this.router.post('/login', validateZod(signupSchema), this.login);

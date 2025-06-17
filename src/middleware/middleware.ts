@@ -34,19 +34,21 @@ export async function authMiddleware(
   const token = req.cookies?.['sb-access-token'];
 
   if (!token) {
-    return res.status(401).json({ message: 'Unauthorized: No token provided' });
+    res.status(401).json({ message: 'Unauthorized: No token provided' });
+    return;
   }
 
   try {
     const { data, error } = await supabase.auth.getUser(token);
 
     if (error || !data.user) {
-      return res.status(401).json({ message: 'Unauthorized: Invalid token' });
+      res.status(401).json({ message: 'Unauthorized: Invalid token' });
+      return;
     }
 
     req.user = data.user;
     next();
   } catch (err) {
-    return res.status(401).json({ message: 'Unauthorized: Token verification failed' });
+    res.status(401).json({ message: 'Unauthorized: Token verification failed' });
   }
 }

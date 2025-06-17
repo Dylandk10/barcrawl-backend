@@ -12,7 +12,7 @@ class UserService {
     const { data, error } = await supabase.auth.admin.createUser({
       email,
       password,
-      email_confirm: true, 
+      email_confirm: true, //change to false to make sure they have to confirm email 
     });
 
     if (error) return error;
