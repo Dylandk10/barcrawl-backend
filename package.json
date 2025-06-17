@@ -15,11 +15,13 @@
   "dependencies": {
     "@googlemaps/places": "^2.0.1",
     "@supabase/supabase-js": "^2.50.0",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "zod": "^3.25.64"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.9",
     "@types/express": "^5.0.3",
     "@types/node": "^24.0.1",
     "nodemon": "^3.1.10",

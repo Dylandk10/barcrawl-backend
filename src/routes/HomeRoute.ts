@@ -3,6 +3,7 @@ import { PlacesClientAPI } from "../services/PlacesClientAPI";
 import { type SearchText, searchTextSchema, signupSchema, type signup } from "../validations/validate";
 import { validateZod } from "../middleware/middleware";
 import userService from "../db/userService";
+import { AuthError } from "@supabase/supabase-js";
 
 
 
@@ -22,6 +23,7 @@ export class HomeRoute {
     this.router.post("/searchTextTest", validateZod(searchTextSchema), this.searchTextTest);
     this.router.post("/searchForPlace", this.searchByText);
     this.router.post("/signup", validateZod(signupSchema), this.signup);
+    this.router.post('/login', validateZod(signupSchema), this.login);
   }
 
 
@@ -41,11 +43,35 @@ export class HomeRoute {
   private async signup(req: Request, res: Response): Promise<void> {
     const signupData: signup = req.body;
     const user = await userService.createUser(signupData.email, signupData.password);
-    if(user === null) {
-      res.status(500).json({error: "Error with creasting a user"});
+  
+    if(user instanceof AuthError) {
+      res.status(user.status || 400).json({error: user});
+      return;
+    }
+    
+    res.status(201).json({
+      message: 'Signup successful! Please check your email to confirm your account.',
+      user: user.user,
+    });
+  }
+
+  
+  private async login(req: Request, res: Response): Promise<void> {
+    const loginData: signup = req.body;
+    const user = await userService.login(loginData.email, loginData.password);
+
+    if(user instanceof AuthError) {
+      res.status(user.status || 400).json({error: user});
+      return;
     }
 
-    res.status(200).json(user);
+    res.cookie('sb-access-token', user.jwt, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 1000,
+    }).status(201).json({data: "Signin completeed"});
+
   }
 
 
