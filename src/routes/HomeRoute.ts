@@ -24,12 +24,26 @@ export class HomeRoute {
     this.router.post("/searchForPlace", this.searchByText);
     this.router.post("/signup", validateZod(signupSchema), this.signup);
     this.router.post('/login', validateZod(signupSchema), this.login);
+    this.router.get("/authorize", this.authorize);
+    this.router.post("/logout", this.logout);
   }
 
 
 
   private index(req: Request, res: Response): void {
     res.send("Hello from class-based TypeScript route!");
+  }
+
+  //used to authorize pages and request from front end similar to middleware but instead returning user for frontend
+  private async authorize(req: Request, res: Response) {
+      const authenticated = await userService.authorizeWebToken(req);
+
+      if(authenticated === null) {
+        res.status(401).send("Not Authorized!");
+        return;
+      }
+
+      res.status(200).json({user: authenticated});
   }
 
 
@@ -72,6 +86,17 @@ export class HomeRoute {
       maxAge: 60 * 60 * 1000,
     }).status(201).json({data: "Signin completeed"});
 
+  }
+
+  private logout(req: Request, res: Response): void {
+      res.clearCookie('sb-access-token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        path: '/', // match the original path
+  });
+
+    res.status(200).json({ message: 'Logged out' });
   }
 
 
