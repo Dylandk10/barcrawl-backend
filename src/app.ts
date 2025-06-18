@@ -1,5 +1,6 @@
 import express from 'express';
 import { HomeRoute } from './routes/HomeRoute';
+import { SearchRoute } from './routes/SearchRoutes';
 import { ENV } from './env';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -22,8 +23,14 @@ app.use(
 // For parsing application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
+
+//map the routes
 const homeRoute = new HomeRoute();
+const searchRoute = new SearchRoute();
 app.use('/', homeRoute.getRouter());
+app.use('/search', searchRoute.getRouter());
+
+
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
