@@ -1,5 +1,4 @@
 import { Router, Request, Response } from "express";
-import { PlacesClientAPI } from "../services/PlacesClientAPI";
 import { type SearchText, searchTextSchema, signupSchema, type signup } from "../validations/validate";
 import { validateZod,  authMiddleware} from "../middleware/middleware";
 import userService from "../db/userService";
@@ -9,11 +8,9 @@ import { AuthError } from "@supabase/supabase-js";
 
 export class HomeRoute {
   private router: Router;
-  private googleClient;
 
   constructor() {
     this.router = Router();
-    this.googleClient = new PlacesClientAPI();
     this.registerRoutes();
   }
 
@@ -21,7 +18,6 @@ export class HomeRoute {
   private registerRoutes(): void {
     this.router.get("/", this.index);
     this.router.post("/searchTextTest", authMiddleware, validateZod(searchTextSchema), this.searchTextTest);
-    this.router.post("/searchForPlace", this.searchByText);
     this.router.post("/signup", validateZod(signupSchema), this.signup);
     this.router.post('/login', validateZod(signupSchema), this.login);
     this.router.get("/authorize", this.authorize);
@@ -97,13 +93,6 @@ export class HomeRoute {
   });
 
     res.status(200).json({ message: 'Logged out' });
-  }
-
-
-  private async searchByText(req: Request, res: Request): Promise<void> {
-    const searchText = req.body;
-    //just to test the google call
-    await this.googleClient.searchByTest(searchText);
   }
 
 
