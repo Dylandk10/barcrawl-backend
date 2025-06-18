@@ -17,3 +17,13 @@ export const signupSchema = z.object({
     .max(100, { message: 'Password is too long' }),
 });
 export type signup = z.infer<typeof signupSchema>;
+
+
+
+//searching for nearby places must have the following lat and long
+export const searchForNearByPlacesSchema = z.object({
+  lat: z.string(),
+  long: z.string()
+});
+
+export type getPlacesNearMe = z.infer<typeof searchForNearByPlacesSchema>;
