@@ -18,7 +18,7 @@ class GeoapifyService {
     lat: string,
     category: string = "catering.restaurant",
     radius: string = "10000",
-    limit: string = "30"
+    limit: string = "8"
   ) {
     try {
       const url = `https://api.geoapify.com/v2/places?categories=${category}&filter=circle:${lon},${lat},${radius}&limit=${limit}&apiKey=${this.apiKey}`;
