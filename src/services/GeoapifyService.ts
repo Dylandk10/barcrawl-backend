@@ -49,7 +49,7 @@ class GeoapifyService {
     lon: string,
     lat: string,
     category: string = "catering.restaurant",
-    radius: string = "10000",
+    radius: string = "50000",
     limit: string = "30"
   ) {
     try {
@@ -64,7 +64,7 @@ class GeoapifyService {
           lat: place.geometry.coordinates[1],
           on: place.geometry.coordinates[0],
           id: place.properties.place_id,
-          website: place.properties.website || "No Website",
+          website: place.properties.website || "No website listed",
           tags: place.properties.categories,
         }));
 
