@@ -65,7 +65,13 @@ class GeoapifyService {
           on: place.geometry.coordinates[0],
           id: place.properties.place_id,
           website: place.properties.website || "No Website",
+          tags: place.properties.categories,
         }));
+
+        //the categories from geoapify returns decimals for contraction and is rather repetive so lets just filter them.
+        places.forEach((place: any) => {
+          place.tags = place.tags.filter((tag: any) => tag.includes("building") === false);
+        });
 
         return places;
       }
